@@ -19,6 +19,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="tc-new-price">
+      <head>
+        <link
+          href="https://fonts.cdnfonts.com/css/pp-neue-montreal"
+          rel="stylesheet"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

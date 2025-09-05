@@ -9,7 +9,7 @@ import Link from "next/link";
 gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
 const Intro = () => {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     document.fonts.ready.then(() => {

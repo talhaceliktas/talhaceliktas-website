@@ -8,8 +8,8 @@ import Link from "next/link";
 
 gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
-const Intro = () => {
-  const [visible, setVisible] = useState(false);
+const Intro = ({ setIntroIsVisible, introIsVisible }) => {
+  const [visible, setVisible] = useState(introIsVisible);
 
   useEffect(() => {
     document.fonts.ready.then(() => {
@@ -59,24 +59,29 @@ const Intro = () => {
     tl.to(".intro", {
       autoAlpha: 0,
       duration: 1,
-      onComplete: () => setVisible(false),
+      onComplete: () => {
+        setVisible(false);
+        setIntroIsVisible(false);
+      },
     });
   }
 
   if (!visible) return null;
 
   return (
-    <div className="flex flex-col gap-y-3 h-screen w-screen justify-center items-center relative intro z-20 bg-background">
-      <h3 className="text-9xl font-light overflow-hidden relative font-moneral name">
-        TALHA
-        <span className="absolute left-4 bottom-0 w-0 h-[1px] bg-white name-underline"></span>
-      </h3>
-      <Link
-        href="#"
-        className="text-9xl font-light overflow-hidden font-moneral surname"
-      >
-        CELIKTAS
-      </Link>
+    <div className="fixed bg-background z-50 intro">
+      <div className="flex flex-col gap-y-3 h-screen w-screen justify-center items-center relative">
+        <h3 className="text-9xl font-light overflow-hidden relative font-moneral name">
+          TALHA
+          <span className="absolute left-4 bottom-0 w-0 h-[1px] bg-white name-underline"></span>
+        </h3>
+        <Link
+          href="#"
+          className="text-9xl font-light overflow-hidden font-moneral surname"
+        >
+          CELIKTAS
+        </Link>
+      </div>
     </div>
   );
 };

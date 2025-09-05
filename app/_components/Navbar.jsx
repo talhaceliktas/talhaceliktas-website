@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import Link from "next/link";
+import { FiGithub } from "react-icons/fi";
 
 gsap.registerPlugin(SplitText);
 
@@ -42,16 +43,20 @@ const Navbar = () => {
         )
         .to(
           `#nav-${originalText}`,
-          {
-            width: "100%",
-            duration: 0.3,
-            ease: "power3.out",
-          },
+          { width: "100%", duration: 0.3, ease: "power3.out" },
           0.25
         );
 
-      link.addEventListener("mouseenter", () => tl.play());
-      link.addEventListener("mouseleave", () => tl.reverse());
+      const handleMouseEnter = () => gsap.delayedCall(0.15, () => tl.play());
+      const handleMouseLeave = () => tl.reverse();
+
+      link.addEventListener("mouseenter", handleMouseEnter);
+      link.addEventListener("mouseleave", handleMouseLeave);
+
+      return () => {
+        link.removeEventListener("mouseenter", handleMouseEnter);
+        link.removeEventListener("mouseleave", handleMouseLeave);
+      };
     });
   }, []);
 
@@ -60,7 +65,7 @@ const Navbar = () => {
       <Link href="#" className="text-[2.5rem] font-light font-moneral logo">
         celiktas
       </Link>
-      <div className="text-[1.5rem] font-normal font-moneral flex gap-x-6">
+      <div className="text-[1.3rem] font-normal font-moneral flex gap-x-6">
         <Link href="about" className="nav-link overflow-hidden relative">
           About
         </Link>
@@ -74,6 +79,15 @@ const Navbar = () => {
           Contact
         </Link>
       </div>
+      <a
+        href="https://github.com/talhaceliktas"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex justify-center items-center gap-x-2 overflow-hidden relative text-xl text-blue-400 font-open-sans font-semibold hover:text-blue-500 duration-300"
+      >
+        <FiGithub size={30} />
+        GitHub
+      </a>
     </nav>
   );
 };

@@ -7,7 +7,7 @@ import { useStore } from "../store/store";
 import { Toaster } from "react-hot-toast";
 
 export default function HomeLayout({ children }) {
-  const { introIsVisible, ideIsFullScreen } = useStore();
+  const { introIsVisible } = useStore();
 
   return (
     <main>

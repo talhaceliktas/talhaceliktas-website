@@ -1,44 +1,83 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import gsap from "gsap";
 import { SplitText } from "gsap/all";
 import Link from "next/link";
 import { FiGithub } from "react-icons/fi";
 import NavLink from "./NavLink";
 import MobileNavs from "./MobileNavs";
+import MobileNavButton from "./MobileNavButton";
 
 gsap.registerPlugin(SplitText);
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const animationsRef = useRef([]);
+  const splitTextsRef = useRef([]);
+
+  const cleanupAnimations = () => {
+    animationsRef.current.forEach(({ timeline, events, element }) => {
+      timeline.kill();
+      if (events && events.length > 0) {
+        events.forEach(({ event, handler }) => {
+          element.removeEventListener(event, handler);
+        });
+      }
+    });
+    animationsRef.current = [];
+
+    splitTextsRef.current.forEach((splitText) => {
+      if (splitText && splitText.revert) {
+        splitText.revert();
+      }
+    });
+    splitTextsRef.current = [];
+  };
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const wasMobile = isMobile;
+      const nowMobile = window.innerWidth < 768;
+
+      setIsMobile(nowMobile);
+
+      if (wasMobile !== nowMobile) {
+        cleanupAnimations();
+      }
     };
 
     checkMobile();
     window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+    return () => {
+      window.removeEventListener("resize", checkMobile);
+      cleanupAnimations();
+    };
+  }, [isMobile]);
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile) {
+      cleanupAnimations();
+      return;
+    }
+
+    cleanupAnimations();
 
     const links = document.querySelectorAll(".nav-link");
 
     links.forEach((link) => {
-      const originalText = link.textContent;
+      const originalText = link.dataset.original || link.textContent.trim();
       const hoverText = link.dataset.hover || originalText;
 
+      link.dataset.original = originalText;
+
       link.innerHTML = `
-      <span class="original split relative z-10">${originalText}</span>
-      <span class="hover split absolute left-0 top-0 z-10">${hoverText}</span>
-      <span id="nav-${originalText}" class="absolute left-0 bottom-1 h-[1px] w-0 bg-white z-20"></span>
-    `;
+        <span class="original split relative z-10">${originalText}</span>
+        <span class="hover split absolute left-0 top-0 z-10">${hoverText}</span>
+        <span id="nav-${originalText.replace(/\s+/g, "-")}" class="absolute left-0 bottom-1 h-[1px] w-0 bg-white z-20"></span>
+      `;
 
       const originalSplit = SplitText.create(link.querySelector(".original"), {
         type: "chars",
@@ -46,6 +85,8 @@ const Navbar = () => {
       const hoverSplit = SplitText.create(link.querySelector(".hover"), {
         type: "chars",
       });
+
+      splitTextsRef.current.push(originalSplit, hoverSplit);
 
       const tl = gsap.timeline({ paused: true });
       tl.to(
@@ -60,7 +101,7 @@ const Navbar = () => {
           0,
         )
         .to(
-          `#nav-${originalText}`,
+          `#nav-${originalText.replace(/\s+/g, "-")}`,
           { width: "100%", duration: 0.3, ease: "power3.out" },
           0.25,
         );
@@ -71,10 +112,14 @@ const Navbar = () => {
       link.addEventListener("mouseenter", handleMouseEnter);
       link.addEventListener("mouseleave", handleMouseLeave);
 
-      return () => {
-        link.removeEventListener("mouseenter", handleMouseEnter);
-        link.removeEventListener("mouseleave", handleMouseLeave);
-      };
+      animationsRef.current.push({
+        timeline: tl,
+        element: link,
+        events: [
+          { event: "mouseenter", handler: handleMouseEnter },
+          { event: "mouseleave", handler: handleMouseLeave },
+        ],
+      });
     });
   }, [isMobile]);
 
@@ -106,27 +151,10 @@ const Navbar = () => {
         GitHub
       </a>
 
-      <button
-        className="z-50 flex h-8 w-8 flex-col items-center justify-center gap-1 md:hidden"
-        onClick={toggleMobileMenu}
-        aria-label="Toggle menu"
-      >
-        <span
-          className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
-            isMobileMenuOpen ? "translate-y-1.5 rotate-45" : ""
-          }`}
-        />
-        <span
-          className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
-            isMobileMenuOpen ? "opacity-0" : ""
-          }`}
-        />
-        <span
-          className={`block h-0.5 w-6 bg-white transition-all duration-300 ${
-            isMobileMenuOpen ? "-translate-y-1.5 -rotate-45" : ""
-          }`}
-        />
-      </button>
+      <MobileNavButton
+        isMobileMenuOpen={isMobileMenuOpen}
+        toggleMobileMenu={toggleMobileMenu}
+      />
 
       <MobileNavs
         toggleMobileMenu={toggleMobileMenu}

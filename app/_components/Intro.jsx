@@ -13,7 +13,6 @@ const Intro = () => {
   const { setIntroIsVisible, introIsVisible } = useStore();
   const [mounted, setMounted] = useState(false);
 
-  // Client-only mount
   useEffect(() => {
     setMounted(true);
   }, []);

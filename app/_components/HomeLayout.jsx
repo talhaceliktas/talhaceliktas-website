@@ -1,19 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import About from "./_components/About";
-import Intro from "./_components/Intro";
-import Navbar from "./_components/Navbar";
-import IDEBox from "./_components/IDEBox";
+import Intro from "./Intro";
+import Navbar from "./Navbar";
+import IDEBox from "./IDEBox";
 
-const pages = [
-  { name: "About", opened: true },
-  { name: "Portfolio", opened: false },
-  { name: "Skills", opened: true },
-  { name: "Contact", opened: false },
-];
+const pages = ["About", "Portfolio", "Skills", "Contact"];
 
-export default function Home() {
+export default function HomeLayout({ children }) {
   const [introIsVisible, setIntroIsVisible] = useState(false);
   const [openedPages, setOpenedPages] = useState(pages);
 
@@ -26,7 +20,7 @@ export default function Home() {
       <Navbar />
       {!introIsVisible && (
         <IDEBox openedPages={openedPages} setOpenedPages={setOpenedPages}>
-          <About />
+          {children}
         </IDEBox>
       )}
     </main>

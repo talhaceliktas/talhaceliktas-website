@@ -1,3 +1,4 @@
+import HomeLayout from "./_components/HomeLayout";
 import "./globals.css";
 
 import { Open_Sans } from "next/font/google";
@@ -18,7 +19,9 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body className={`antialiased`}>{children}</body>
+      <body className={`antialiased`}>
+        <HomeLayout>{children}</HomeLayout>
+      </body>
     </html>
   );
 }

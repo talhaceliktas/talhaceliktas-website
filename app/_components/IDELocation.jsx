@@ -5,7 +5,7 @@ import { FaReact } from "react-icons/fa";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 
-const About = () => {
+const IDELocation = ({ children }) => {
   useGSAP(() => {
     const tl = gsap.timeline();
 
@@ -20,7 +20,7 @@ const About = () => {
       ".about-title-2",
       {
         scrambleText: {
-          text: "About.jsx",
+          text: children,
           chars: "XO",
           revealDelay: 0.4,
           speed: 0.5,
@@ -41,4 +41,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default IDELocation;

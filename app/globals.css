@@ -8,11 +8,21 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-react-blue: #8be9fd;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-moneral: "PP Neue Montreal";
   --font-open-sans: "Open Sans";
+
+  --color-primary-50: #e6faff;
+  --color-primary-100: #c0f0ff;
+  --color-primary-200: #9ae6ff;
+  --color-primary-300: #8be9fd;
+  --color-primary-400: #5bc6e4;
+  --color-primary-500: #3a9cb9;
+  --color-primary-600: #2b6c82;
+  --color-primary-700: #282c34;
+  --color-primary-800: #1f2227;
+  --color-primary-900: #15171a;
 }
 
 @media (prefers-color-scheme: dark) {

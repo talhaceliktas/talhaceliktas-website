@@ -1,9 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useStore } from "../store/store";
+import toast from "react-hot-toast";
 
 const IDEButtons = () => {
   const [onHover, setOnHover] = useState();
+  const { changeIdeIsFullScreen } = useStore();
 
   return (
     <div className="mt-4 mb-3 ml-4 flex gap-x-2">
@@ -13,6 +16,7 @@ const IDEButtons = () => {
         }`}
         onMouseEnter={() => setOnHover(true)}
         onMouseLeave={() => setOnHover(false)}
+        onClick={() => toast.error("I wouldn’t recommend doing this. 🤔")}
       >
         X
       </button>
@@ -22,6 +26,11 @@ const IDEButtons = () => {
         }`}
         onMouseEnter={() => setOnHover(true)}
         onMouseLeave={() => setOnHover(false)}
+        onClick={() =>
+          toast.error(
+            "If you minimize the IDE, there’s no point in staying here, right? 😂",
+          )
+        }
       >
         -
       </button>
@@ -31,6 +40,7 @@ const IDEButtons = () => {
         }`}
         onMouseEnter={() => setOnHover(true)}
         onMouseLeave={() => setOnHover(false)}
+        onClick={changeIdeIsFullScreen}
       >
         ⤡
       </button>

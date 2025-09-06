@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useStore } from "../store/store";
 import { FaReact } from "react-icons/fa";
 import { MdReportGmailerrorred } from "react-icons/md";
-import { pages } from "@/app/_utils/helper";
+import { pages } from "@/app/_utils/constants";
 
 const IDEPage = ({ page }) => {
   const path = usePathname();
@@ -55,7 +55,7 @@ const IDEPage = ({ page }) => {
         )}
       </Link>
       <button
-        className="mr-2 cursor-pointer text-[#585c64]"
+        className="text-primary-600 mr-2 cursor-pointer"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

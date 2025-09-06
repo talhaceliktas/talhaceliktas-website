@@ -1,11 +1,17 @@
 import { create } from "zustand";
 
-import { pages as initialPages } from "@/app/_utils/helper";
-const intialIntroVisibleState = true;
+import {
+  pages as initialPages,
+  introIsVisible as intialIntroVisibleState,
+  IDEisFullScreen as initialIDEFullScreenState,
+} from "@/app/_utils/constants";
 
 export const useStore = create((set) => ({
   openedPages: initialPages,
   introIsVisible: intialIntroVisibleState,
+  ideIsFullScreen: initialIDEFullScreenState,
+  changeIdeIsFullScreen: () =>
+    set((state) => ({ ideIsFullScreen: !state.ideIsFullScreen })),
   resetOpenedPages: () => set(() => ({ openedPages: initialPages })),
   setIntroIsVisible: (value) => set(() => ({ introIsVisible: value })),
   addPage: (page) =>

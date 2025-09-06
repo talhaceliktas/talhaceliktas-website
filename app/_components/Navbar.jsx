@@ -78,7 +78,7 @@ const Navbar = () => {
         <Link href="contact" className="nav-link relative overflow-hidden">
           Contact
         </Link>
-        <Link href="contact" className="nav-link relative overflow-hidden">
+        <Link href="playground" className="nav-link relative overflow-hidden">
           Playground
         </Link>
       </div>

@@ -18,5 +18,3 @@ export function findNavLocation() {
     y: logoCenterY - surnameCenterY,
   };
 }
-
-export const pages = ["About", "Portfolio", "Skills", "Contact", "Playground"];

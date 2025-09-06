@@ -35,8 +35,8 @@ const IDELocation = () => {
   }, [pathName]);
 
   return (
-    <div className="ide-location ml-3 flex w-full items-center">
-      <h2 className="text-md text-react-blue flex items-center gap-x-2">
+    <div className="ide-location ml-3 flex items-center">
+      <h2 className="text-md text-primary-300 flex items-center gap-x-2">
         <span className="about-title-1">XOOXOXOXOXOOXO</span>
         <FaReact />
         <span className="about-title-2">XOXOXOXOXO</span>

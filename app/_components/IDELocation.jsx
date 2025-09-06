@@ -10,8 +10,6 @@ const IDELocation = () => {
   const path = usePathname();
   const pathName = path.replace("/", "");
 
-  console.log(pathName);
-
   useGSAP(() => {
     const tl = gsap.timeline();
 
@@ -37,7 +35,7 @@ const IDELocation = () => {
   }, [pathName]);
 
   return (
-    <div className="w-full flex items-center ml-3">
+    <div className="w-full flex items-center ml-3 ide-location">
       <h2 className="text-md text-react-blue flex items-center gap-x-2">
         <span className="about-title-1">XOOXOXOXOXOOXO</span>
         <FaReact />

@@ -25,7 +25,7 @@ const IDEPages = ({ openedPages, setOpenedPages }) => {
   }
 
   return (
-    <div className="absolute left-0 flex items-center text-xl text-react-blue bg-[#1f2228]">
+    <div className="flex items-center text-xl text-react-blue bg-[#1f2228]">
       {openedPages.map((page) => (
         <Link
           className="flex items-center border-2 border-gray-800 justify-between relative"

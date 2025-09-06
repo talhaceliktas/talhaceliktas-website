@@ -6,7 +6,7 @@ const IDEButtons = () => {
   const [onHover, setOnHover] = useState();
 
   return (
-    <div className="top-4 left-4 absolute flex gap-x-2">
+    <div className="flex gap-x-2 mb-3 mt-4 ml-4">
       <button
         className={`bg-[#F84948] w-4 h-4 flex justify-center items-center text-[0.7rem] rounded-full font-bold cursor-pointer ${
           onHover ? "text-[#6A4F1A]" : "text-[#F84948]"

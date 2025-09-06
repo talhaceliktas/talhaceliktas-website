@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-const initialPages = ["About", "Portfolio", "Skills", "Contact"];
+import { pages as initialPages } from "@/app/_utils/helper";
 const intialIntroVisibleState = true;
 
 export const useStore = create((set) => ({

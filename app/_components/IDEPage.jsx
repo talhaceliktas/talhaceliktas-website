@@ -4,13 +4,15 @@ import React, { useEffect } from "react";
 import { useStore } from "../store/store";
 import { FaReact } from "react-icons/fa";
 import { MdReportGmailerrorred } from "react-icons/md";
-const pages = ["about", "portfolio", "skills", "contact"];
+import { pages } from "@/app/_utils/helper";
 
 const IDEPage = ({ page }) => {
   const path = usePathname();
   const pathName = path.replace("/", "");
 
-  const pageIsCorrect = pages.includes(page.toLowerCase());
+  const pageIsCorrect = pages.some(
+    (p) => p.toLowerCase() === page.toLowerCase(),
+  );
 
   const router = useRouter();
   const { removePage } = useStore();

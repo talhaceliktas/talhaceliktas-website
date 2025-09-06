@@ -11,13 +11,14 @@ gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
 const Intro = () => {
   const { setIntroIsVisible, introIsVisible } = useStore();
-  const [visible, setVisible] = useState(introIsVisible);
 
   useEffect(() => {
     document.fonts.ready.then(() => {
       initAnimation();
     });
   }, []);
+
+  if (!introIsVisible) return null;
 
   function initAnimation() {
     let name = SplitText.create(".name", { type: "words, chars" });
@@ -54,7 +55,7 @@ const Intro = () => {
           scrambleText: { text: "celiktas"[i], chars: "XO" },
           duration: 0.05,
         },
-        `${!i ? ">" : "<-0.1"}`
+        `${!i ? ">" : "<-0.1"}`,
       );
     });
 
@@ -62,28 +63,33 @@ const Intro = () => {
       autoAlpha: 0,
       duration: 1,
       onComplete: () => {
-        setVisible(false);
         setIntroIsVisible(false);
       },
     });
   }
 
-  if (!visible) return null;
+  if (!setIntroIsVisible) return null;
 
   return (
-    <div className="fixed bg-background z-50 intro">
-      <div className="flex flex-col gap-y-3 h-screen w-screen justify-center items-center relative">
-        <h3 className="text-9xl font-light overflow-hidden relative font-moneral name">
+    <div className="bg-background intro fixed z-50">
+      <div className="relative flex h-screen w-screen flex-col items-center justify-center gap-y-3">
+        <h3 className="font-moneral name relative overflow-hidden text-9xl font-light">
           TALHA
-          <span className="absolute left-4 bottom-0 w-0 h-[1px] bg-white name-underline"></span>
+          <span className="name-underline absolute bottom-0 left-4 h-[1px] w-0 bg-white"></span>
         </h3>
         <Link
           href="#"
-          className="text-9xl font-light overflow-hidden font-moneral surname"
+          className="font-moneral surname overflow-hidden text-9xl font-light"
         >
           CELIKTAS
         </Link>
       </div>
+      <button
+        className="fixed right-5 bottom-5 cursor-pointer"
+        onClick={() => setIntroIsVisible(false)}
+      >
+        skip intro?
+      </button>
     </div>
   );
 };

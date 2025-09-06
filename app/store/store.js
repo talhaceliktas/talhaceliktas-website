@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 const initialPages = ["About", "Portfolio", "Skills", "Contact"];
-const intialIntroVisibleState = false;
+const intialIntroVisibleState = true;
 
 export const useStore = create((set) => ({
   openedPages: initialPages,
@@ -24,7 +24,7 @@ export const useStore = create((set) => ({
   removePage: (page, cb) =>
     set((state) => {
       const remaining = state.openedPages.filter(
-        (p) => p.toLowerCase() !== page.toLowerCase()
+        (p) => p.toLowerCase() !== page.toLowerCase(),
       );
       if (cb) cb(remaining);
       return { openedPages: remaining };

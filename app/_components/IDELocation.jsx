@@ -30,12 +30,12 @@ const IDELocation = () => {
           speed: 0.2,
         },
       },
-      "+=0.1"
+      "+=0.1",
     );
   }, [pathName]);
 
   return (
-    <div className="w-full flex items-center ml-3 ide-location">
+    <div className="ide-location ml-3 flex w-full items-center">
       <h2 className="text-md text-react-blue flex items-center gap-x-2">
         <span className="about-title-1">XOOXOXOXOXOOXO</span>
         <FaReact />

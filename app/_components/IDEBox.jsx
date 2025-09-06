@@ -27,7 +27,7 @@ const IDEBox = ({ children }) => {
           autoAlpha: 0,
           stagger: 0.2,
         },
-        "-=0.2"
+        "-=0.2",
       )
       .from(".ide-pages", { xPercent: 100, stagger: 0.2, autoAlpha: 0 })
       .from(
@@ -38,7 +38,7 @@ const IDEBox = ({ children }) => {
           duration: 1,
           ease: "back(2)",
         },
-        "-=0.7"
+        "-=0.7",
       )
       .to(".about-title-1", {
         scrambleText: {
@@ -58,12 +58,12 @@ const IDEBox = ({ children }) => {
             speed: 0.2,
           },
         },
-        "+=0.1"
+        "+=0.1",
       );
   });
 
   return (
-    <div className="mt-60 flex my-0 mx-auto max-w-[1280px] bg-[#282C34] rounded-md h-[400px] flex-col gap-y-2 ide-box">
+    <div className="ide-box mx-auto my-0 mt-60 flex h-[400px] max-w-[1280px] flex-col gap-y-2 rounded-md bg-[#282C34]">
       <IDEButtons />
       <IDEPages />
       <IDELocation />

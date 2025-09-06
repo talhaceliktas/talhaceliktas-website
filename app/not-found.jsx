@@ -11,7 +11,7 @@ function NotFound() {
       <h1 className="text-3xl font-semibold">Looks like you’re lost 😅</h1>
       <Link
         href="/"
-        className="inline-block px-6 py-3 text-lg rounded-xl text-red-600 bg-[#1f2228]"
+        className="inline-block rounded-xl bg-[#1f2228] px-6 py-3 text-lg text-red-600"
         onClick={resetOpenedPages}
       >
         go back safe place

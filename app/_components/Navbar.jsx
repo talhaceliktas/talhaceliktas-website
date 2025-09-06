@@ -33,18 +33,18 @@ const Navbar = () => {
       tl.to(
         originalSplit.chars,
         { yPercent: -100, stagger: 0.02, ease: "power3.out" },
-        0
+        0,
       )
         .fromTo(
           hoverSplit.chars,
           { yPercent: 100 },
           { yPercent: 0, stagger: 0.02, ease: "power3.out" },
-          0
+          0,
         )
         .to(
           `#nav-${originalText}`,
           { width: "100%", duration: 0.3, ease: "power3.out" },
-          0.25
+          0.25,
         );
 
       const handleMouseEnter = () => gsap.delayedCall(0.15, () => tl.play());
@@ -61,21 +61,21 @@ const Navbar = () => {
   }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full h-20 flex items-center z-10 justify-around">
-      <Link href="#" className="text-[2.5rem] font-light font-moneral logo">
+    <nav className="fixed top-0 left-0 z-10 flex h-20 w-full items-center justify-around">
+      <Link href="#" className="font-moneral logo text-[2.5rem] font-light">
         celiktas
       </Link>
-      <div className="text-[1.3rem] font-normal font-moneral flex gap-x-6">
-        <Link href="about" className="nav-link overflow-hidden relative">
+      <div className="font-moneral flex gap-x-6 text-[1.3rem] font-normal">
+        <Link href="about" className="nav-link relative overflow-hidden">
           About
         </Link>
-        <Link href="portfolio" className="nav-link overflow-hidden relative">
+        <Link href="portfolio" className="nav-link relative overflow-hidden">
           Portfolio
         </Link>
-        <Link href="skills" className="nav-link overflow-hidden relative">
+        <Link href="skills" className="nav-link relative overflow-hidden">
           Skills
         </Link>
-        <Link href="contact" className="nav-link overflow-hidden relative">
+        <Link href="contact" className="nav-link relative overflow-hidden">
           Contact
         </Link>
       </div>
@@ -83,7 +83,7 @@ const Navbar = () => {
         href="https://github.com/talhaceliktas"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex justify-center items-center gap-x-2 overflow-hidden relative text-xl text-blue-400 font-open-sans font-semibold hover:text-blue-500 duration-300"
+        className="font-open-sans relative flex items-center justify-center gap-x-2 overflow-hidden text-xl font-semibold text-blue-400 duration-300 hover:text-blue-500"
       >
         <FiGithub size={30} />
         GitHub

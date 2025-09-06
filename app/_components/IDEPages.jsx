@@ -13,7 +13,7 @@ const IDEPages = () => {
   }, [pathName, addPage]);
 
   return (
-    <div className="flex items-center text-xl text-react-blue bg-[#1f2228]">
+    <div className="text-react-blue flex items-center bg-[#1f2228] text-xl">
       {openedPages.map((page) => (
         <IDEPage page={page} key={page} />
       ))}

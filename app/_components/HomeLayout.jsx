@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Intro from "./Intro";
 import Navbar from "./Navbar";
 import IDEBox from "./IDEBox";

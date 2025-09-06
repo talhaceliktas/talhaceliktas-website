@@ -20,7 +20,7 @@ const IDEPage = ({ page }) => {
       if (page.toLowerCase() === pathName) {
         if (remainingPages.length > 0) {
           router.push(
-            `/${remainingPages[remainingPages.length - 1].toLowerCase()}`
+            `/${remainingPages[remainingPages.length - 1].toLowerCase()}`,
           );
         } else {
           router.push("/");
@@ -30,10 +30,10 @@ const IDEPage = ({ page }) => {
   };
 
   return (
-    <div className="flex items-center border-2 border-gray-800 justify-between relative ide-pages">
+    <div className="ide-pages relative flex items-center justify-between border-2 border-gray-800">
       <Link
         href={`/${page.toLowerCase()}`}
-        className={`flex gap-x-2 py-2 pr-6 pl-2 items-center flex-1 ${
+        className={`flex flex-1 items-center gap-x-2 py-2 pr-6 pl-2 ${
           !pageIsCorrect && "text-red-500"
         }`}
       >
@@ -49,11 +49,11 @@ const IDEPage = ({ page }) => {
           </>
         )}
         {page.toLowerCase() === pathName && (
-          <span className="w-full h-[1px] bottom-0 left-0 bg-white absolute"></span>
+          <span className="absolute bottom-0 left-0 h-[1px] w-full bg-white"></span>
         )}
       </Link>
       <button
-        className="cursor-pointer text-[#585c64] mr-2"
+        className="mr-2 cursor-pointer text-[#585c64]"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

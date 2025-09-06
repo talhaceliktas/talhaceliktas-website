@@ -6,9 +6,9 @@ const IDEButtons = () => {
   const [onHover, setOnHover] = useState();
 
   return (
-    <div className="flex gap-x-2 mb-3 mt-4 ml-4">
+    <div className="mt-4 mb-3 ml-4 flex gap-x-2">
       <button
-        className={`bg-[#F84948] w-4 h-4 flex justify-center items-center text-[0.7rem] rounded-full font-bold cursor-pointer ide-button ${
+        className={`ide-button flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-[#F84948] text-[0.7rem] font-bold ${
           onHover ? "text-[#6A4F1A]" : "text-[#F84948]"
         }`}
         onMouseEnter={() => setOnHover(true)}
@@ -17,7 +17,7 @@ const IDEButtons = () => {
         X
       </button>
       <button
-        className={`bg-[#FBBA41] w-4 h-4 flex justify-center items-center text-[0.7rem] rounded-full font-bold cursor-pointer ide-button ${
+        className={`ide-button flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-[#FBBA41] text-[0.7rem] font-bold ${
           onHover ? "text-[#6A4F1A]" : "text-[#FBBA41]"
         }`}
         onMouseEnter={() => setOnHover(true)}
@@ -26,7 +26,7 @@ const IDEButtons = () => {
         -
       </button>
       <button
-        className={`bg-[#36C748] w-4 h-4 flex justify-center items-center text-[0.7rem] rounded-full font-bold cursor-pointer ide-button ${
+        className={`ide-button flex h-4 w-4 cursor-pointer items-center justify-center rounded-full bg-[#36C748] text-[0.7rem] font-bold ${
           onHover ? "text-[#6A4F1A]" : "text-[#36C748]"
         }`}
         onMouseEnter={() => setOnHover(true)}

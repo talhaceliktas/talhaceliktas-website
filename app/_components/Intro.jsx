@@ -5,10 +5,12 @@ import gsap from "gsap";
 import { ScrambleTextPlugin, SplitText } from "gsap/all";
 import { findNavLocation } from "../_utils/helper";
 import Link from "next/link";
+import { useStore } from "../store/store";
 
 gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
-const Intro = ({ setIntroIsVisible, introIsVisible }) => {
+const Intro = () => {
+  const { setIntroIsVisible, introIsVisible } = useStore();
   const [visible, setVisible] = useState(introIsVisible);
 
   useEffect(() => {

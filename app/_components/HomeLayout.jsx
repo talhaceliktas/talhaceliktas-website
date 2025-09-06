@@ -4,25 +4,16 @@ import { useState } from "react";
 import Intro from "./Intro";
 import Navbar from "./Navbar";
 import IDEBox from "./IDEBox";
-
-const pages = ["About", "Portfolio", "Skills", "Contact"];
+import { useStore } from "../store/store";
 
 export default function HomeLayout({ children }) {
-  const [introIsVisible, setIntroIsVisible] = useState(false);
-  const [openedPages, setOpenedPages] = useState(pages);
+  const { introIsVisible } = useStore();
 
   return (
     <main>
-      <Intro
-        setIntroIsVisible={setIntroIsVisible}
-        introIsVisible={introIsVisible}
-      />
+      <Intro />
       <Navbar />
-      {!introIsVisible && (
-        <IDEBox openedPages={openedPages} setOpenedPages={setOpenedPages}>
-          {children}
-        </IDEBox>
-      )}
+      {!introIsVisible && <IDEBox>{children}</IDEBox>}
     </main>
   );
 }

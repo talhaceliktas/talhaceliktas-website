@@ -85,7 +85,7 @@ const IDEBox = ({ children }) => {
   }, [ideIsFullScreen]);
 
   return (
-    <div className="ide-box-outside">
+    <div className="ide-box-outside mx-4">
       <div
         ref={boxRef}
         className="ide-box bg-primary-700 mx-auto my-0 flex h-[400px] min-w-[300px] flex-col gap-y-2 rounded-md"

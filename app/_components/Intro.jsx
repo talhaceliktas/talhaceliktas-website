@@ -11,18 +11,24 @@ gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
 const Intro = () => {
   const { setIntroIsVisible, introIsVisible } = useStore();
+  const [mounted, setMounted] = useState(false);
 
+  // Client-only mount
   useEffect(() => {
-    document.fonts.ready.then(() => {
-      initAnimation();
-    });
+    setMounted(true);
   }, []);
 
-  if (!introIsVisible) return null;
+  useEffect(() => {
+    if (!mounted || !introIsVisible) return;
+
+    document.fonts.ready.then(() => initAnimation());
+  }, [mounted, introIsVisible]);
+
+  if (!mounted || !introIsVisible) return null;
 
   function initAnimation() {
-    let name = SplitText.create(".name", { type: "words, chars" });
-    let surname = SplitText.create(".surname", { type: "words, chars" });
+    const name = SplitText.create(".name", { type: "words, chars" });
+    const surname = SplitText.create(".surname", { type: "words, chars" });
 
     const tl = gsap.timeline();
 
@@ -62,24 +68,20 @@ const Intro = () => {
     tl.to(".intro", {
       autoAlpha: 0,
       duration: 1,
-      onComplete: () => {
-        setIntroIsVisible(false);
-      },
+      onComplete: () => setIntroIsVisible(false),
     });
   }
 
-  if (!setIntroIsVisible) return null;
-
   return (
     <div className="bg-background intro fixed z-50">
-      <div className="relative flex h-screen w-screen flex-col items-center justify-center gap-y-3">
-        <h3 className="font-moneral name relative overflow-hidden text-9xl font-light">
+      <div className="relative flex h-screen w-screen flex-col items-center justify-center gap-y-3 text-6xl md:text-9xl">
+        <h3 className="font-moneral name relative overflow-hidden font-light">
           TALHA
           <span className="name-underline absolute bottom-0 left-4 h-[1px] w-0 bg-white"></span>
         </h3>
         <Link
           href="#"
-          className="font-moneral surname overflow-hidden text-9xl font-light"
+          className="font-moneral surname overflow-hidden font-light"
         >
           CELIKTAS
         </Link>

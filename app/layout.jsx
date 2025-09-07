@@ -1,9 +1,14 @@
 import HomeLayout from "./_components/HomeLayout";
 import "./globals.css";
 
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Press_Start_2P, JetBrains_Mono } from "next/font/google";
 
 export const open_sans = Open_Sans();
+export const press_start_2p = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+});
+export const jetbrains_mono = JetBrains_Mono();
 
 export const metadata = {
   title: "Create Next App",

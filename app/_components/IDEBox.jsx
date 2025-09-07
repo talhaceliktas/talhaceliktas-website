@@ -88,7 +88,7 @@ const IDEBox = ({ children }) => {
     <div className="ide-box-outside mx-4">
       <div
         ref={boxRef}
-        className="ide-box bg-primary-700 mx-auto my-0 flex h-[400px] min-w-[300px] flex-col gap-y-2 rounded-md"
+        className="ide-box bg-primary-700 font-jetbrains-mono mx-auto my-0 flex h-[400px] min-w-[300px] flex-col gap-y-2 rounded-md"
       >
         <IDEButtons />
         <IDEPages />

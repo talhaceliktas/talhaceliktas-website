@@ -1,7 +1,7 @@
 import React from "react";
 
 const Page = () => {
-  return <div>skills</div>;
+  return <div className="flex justify-center">df</div>;
 };
 
 export default Page;

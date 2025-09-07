@@ -137,7 +137,6 @@ const Navbar = () => {
         <NavLink href="about">About</NavLink>
         <NavLink href="portfolio">Portfolio</NavLink>
         <NavLink href="skills">Skills</NavLink>
-        <NavLink href="contact">Contact</NavLink>
         <NavLink href="playground">Playground</NavLink>
       </div>
 
@@ -145,7 +144,7 @@ const Navbar = () => {
         href="https://github.com/talhaceliktas"
         target="_blank"
         rel="noopener noreferrer"
-        className="font-open-sans relative hidden items-center justify-center gap-x-2 overflow-hidden text-xl font-semibold text-blue-400 duration-300 hover:text-blue-500 md:flex"
+        className="font-open-sans text-primary-300 hover:text-primary-400 relative hidden items-center justify-center gap-x-2 overflow-hidden text-xl font-semibold duration-300 md:flex"
       >
         <FiGithub size={30} />
         GitHub

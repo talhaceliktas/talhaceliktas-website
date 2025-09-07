@@ -122,11 +122,6 @@ const MobileNavs = ({ toggleMobileMenu, isMobileMenuOpen }) => {
             </NavLink>
           </div>
           <div ref={addToRefs}>
-            <NavLink href="contact" onClick={toggleMobileMenu}>
-              Contact
-            </NavLink>
-          </div>
-          <div ref={addToRefs}>
             <NavLink href="playground" onClick={toggleMobileMenu}>
               Playground
             </NavLink>
@@ -138,7 +133,7 @@ const MobileNavs = ({ toggleMobileMenu, isMobileMenuOpen }) => {
           href="https://github.com/talhaceliktas"
           target="_blank"
           rel="noopener noreferrer"
-          className="font-open-sans mt-10 flex items-center justify-center gap-x-2 text-xl font-semibold text-blue-400 transition-colors hover:text-blue-500"
+          className="font-open-sans hover:text-primary-400 text-primary-300 mt-10 flex items-center justify-center gap-x-2 text-xl font-semibold transition-colors duration-300"
           onClick={toggleMobileMenu}
         >
           <FiGithub size={30} />

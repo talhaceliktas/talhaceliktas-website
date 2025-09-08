@@ -26,6 +26,10 @@
   --color-primary-900: #15171a;
 }
 
+@utility scrollbar-hide {
+  @apply [scrollbar-width:none] [&::-webkit-scrollbar]:hidden;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;

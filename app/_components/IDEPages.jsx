@@ -13,7 +13,7 @@ const IDEPages = () => {
   }, [pathName, addPage]);
 
   return (
-    <div className="text-primary-300 bg-primary-800 flex w-full items-center overflow-auto text-xl">
+    <div className="text-primary-300 bg-primary-800 flex w-full items-center overflow-auto overflow-y-hidden text-xl">
       {openedPages.map((page) => (
         <IDEPage page={page} key={page} />
       ))}

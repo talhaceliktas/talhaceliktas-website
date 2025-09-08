@@ -93,7 +93,15 @@ const IDEBox = ({ children }) => {
         <IDEButtons />
         <IDEPages />
         <IDELocation />
-        <div>{children}</div>
+        <div
+          className={`flex flex-1 overflow-auto px-3 ${
+            ideIsFullScreen
+              ? "text-2xl sm:text-3xl md:text-4xl"
+              : "text-xl sm:text-2xl md:text-3xl"
+          }`}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

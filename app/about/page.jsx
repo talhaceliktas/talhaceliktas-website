@@ -1,20 +1,9 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { GSDevTools, SplitText } from "gsap/all";
 import React from "react";
 import AboutAnimation from "../_lib/tree/AboutAnimation";
 
-gsap.registerPlugin(SplitText, GSDevTools);
-
 const Page = () => {
-  useGSAP(() => {
-    const tl = gsap.timeline({});
-
-    GSDevTools.create({ animation: tl });
-  });
-
   return (
     <div className="about-div flex w-[100vw]">
       <p className="about-text">

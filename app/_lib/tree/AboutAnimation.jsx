@@ -7,7 +7,7 @@ import {
   IcosahedronGeometry,
   MeshNormalMaterial,
   MeshStandardMaterial,
-  TorusGeometry,
+  TorusKnotGeometry,
 } from "three";
 
 const AboutAnimation = () => {
@@ -41,7 +41,7 @@ function Geometries() {
     {
       position: [-20, 10, -20],
       r: 0.4,
-      geometry: new TorusGeometry(15, 2, 30, 100, 3),
+      geometry: new TorusKnotGeometry(13, 3, 60, 10),
     },
   ];
 

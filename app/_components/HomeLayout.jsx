@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 import IDEBox from "./IDEBox";
 import { useStore } from "../store/store";
 import { Toaster } from "react-hot-toast";
-import Footer from "./Footer";
 
 export default function HomeLayout({ children }) {
   const { introIsVisible } = useStore();
@@ -17,7 +16,6 @@ export default function HomeLayout({ children }) {
       {!introIsVisible && (
         <>
           <IDEBox>{children}</IDEBox>
-          <Footer />
         </>
       )}
       <Toaster

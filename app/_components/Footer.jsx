@@ -95,8 +95,8 @@ const Footer = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-5 left-1/2 flex -translate-x-1/2 flex-col items-center gap-y-2">
-      <div className="contacts flex items-center justify-center gap-x-2">
+    <div className="flex flex-col items-center gap-y-2">
+      <div className="contacts z-10 flex items-center justify-center gap-x-2">
         <a
           href="mailto:celiktas.talha@icloud.com"
           target="_blank"

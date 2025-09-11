@@ -9,6 +9,8 @@ import gsap from "gsap";
 import { ScrambleTextPlugin } from "gsap/all";
 import { usePathname } from "next/navigation";
 import { useStore } from "../store/store";
+import IDETerminal from "./IDETerminal";
+import Footer from "./Footer";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 
@@ -71,7 +73,7 @@ const IDEBox = ({ children }) => {
       .to(
         ".ide-box-outside",
         {
-          paddingTop: ideIsFullScreen ? "80px" : "240px",
+          paddingTop: ideIsFullScreen ? "80px" : "160px",
         },
         0,
       )
@@ -79,6 +81,11 @@ const IDEBox = ({ children }) => {
         boxRef.current,
         {
           maxWidth: ideIsFullScreen ? "100vw" : "1280px",
+          maxHeight: ideIsFullScreen
+            ? "85vh"
+            : window.innerWidth > 798
+              ? "600px"
+              : "500px",
         },
         0,
       );
@@ -88,7 +95,7 @@ const IDEBox = ({ children }) => {
     <div className="ide-box-outside mx-4">
       <div
         ref={boxRef}
-        className="ide-box bg-primary-700 font-jetbrains-mono mx-auto my-0 flex h-[400px] min-w-[300px] flex-col gap-y-2 rounded-md"
+        className="ide-box bg-primary-700 font-jetbrains-mono mx-auto my-0 flex h-[4000px] min-w-[300px] flex-col gap-y-2 rounded-md"
       >
         <IDEButtons />
         <IDEPages />
@@ -101,6 +108,11 @@ const IDEBox = ({ children }) => {
           }`}
         >
           {children}
+        </div>
+        <div className="bg-primary-800 flex flex-col gap-y-3 pt-2 pb-3">
+          <IDETerminal>
+            <Footer />
+          </IDETerminal>
         </div>
       </div>
     </div>

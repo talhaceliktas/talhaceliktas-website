@@ -1,136 +1,204 @@
-import { ContactShadows, Environment, Float } from "@react-three/drei";
+"use client";
+
+import React from "react";
 import { Canvas } from "@react-three/fiber";
-import gsap from "gsap";
-import { useEffect, useRef } from "react";
 import {
-  CapsuleGeometry,
-  IcosahedronGeometry,
-  MeshNormalMaterial,
-  MeshStandardMaterial,
-  TorusKnotGeometry,
-} from "three";
+  Float,
+  ContactShadows,
+  Environment,
+  OrbitControls,
+} from "@react-three/drei";
+import { useSpring, animated } from "@react-spring/three";
+import { useEffect, useRef, useState } from "react";
+import * as THREE from "three";
 
 const AboutAnimation = () => {
+  const canvasRef = useRef();
+  const [scaleFactor, setScaleFactor] = useState(1);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    function handleResize() {
+      if (!canvasRef.current) return;
+      const { width } = canvasRef.current.getBoundingClientRect();
+
+      // Parent div boyutlarına göre scale hesaplama
+      const baseWidth = width < 768 ? 176 : 384; // w-44 = 176px, md:w-96 = 384px
+      setScaleFactor(width / baseWidth);
+      setIsMobile(width < 768);
+    }
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <Canvas
-      className="h-full w-full"
-      camera={{ position: [0, 0, 40], fov: 70 }}
-      shadows
-    >
-      <directionalLight position={[50, 50, 50]} intensity={1} castShadow />
-      <ambientLight intensity={0.5} />
-      <ContactShadows position={[0, -3.5, 0]} opacity={0.65} scale={30} />
-      <Geometries />
-      <Environment preset="studio" />
-    </Canvas>
+    <div className="h-full w-full">
+      <Canvas
+        ref={canvasRef}
+        className="h-full w-full"
+        camera={{
+          position: isMobile ? [0, 15, 25] : [0, 20, 35],
+          fov: isMobile ? 60 : 45,
+        }}
+        shadows
+      >
+        <directionalLight
+          position={isMobile ? [15, 15, 15] : [25, 25, 25]}
+          intensity={isMobile ? 0.8 : 1.2}
+          castShadow
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+          shadow-camera-far={50}
+          shadow-camera-left={-20}
+          shadow-camera-right={20}
+          shadow-camera-top={20}
+          shadow-camera-bottom={-20}
+        />
+        <ambientLight intensity={0.3} />
+        <ContactShadows
+          position={[0, -8, 0]}
+          opacity={0.4}
+          scale={isMobile ? 20 : 40}
+          blur={2}
+          far={20}
+        />
+        <Geometries scaleFactor={scaleFactor} isMobile={isMobile} />
+        <Environment preset="city" />
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          autoRotate={true}
+          autoRotateSpeed={0.5}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={Math.PI / 4}
+        />
+      </Canvas>
+    </div>
   );
 };
 
-function Geometries() {
-  const geometries = [
-    {
-      position: [0, 0, -20],
-      r: 0.3,
-      geometry: new IcosahedronGeometry(15, 0),
-    },
-    {
-      position: [20, 10, -20],
-      r: 0.4,
-      geometry: new CapsuleGeometry(10, 15, 32, 64, 64),
-    },
-    {
-      position: [-20, 10, -20],
-      r: 0.4,
-      geometry: new TorusKnotGeometry(13, 3, 60, 10),
-    },
-  ];
+function Geometries({ scaleFactor, isMobile }) {
+  // Mobile ve desktop için farklı pozisyonlar
+  const geometriesConfig = isMobile
+    ? [
+        { position: [0, 2, 0], r: 0.4, type: "Icosahedron", size: 3 },
+        { position: [6, -2, -3], r: 0.3, type: "Capsule", size: 2.5 },
+        { position: [-6, -2, -3], r: 0.35, type: "TorusKnot", size: 3 },
+      ]
+    : [
+        { position: [0, 5, 0], r: 0.3, type: "Icosahedron", size: 4 },
+        { position: [12, -3, -5], r: 0.4, type: "Capsule", size: 3.5 },
+        { position: [-12, -3, -5], r: 0.35, type: "TorusKnot", size: 4 },
+      ];
 
   const materials = [
-    new MeshNormalMaterial(),
-    new MeshStandardMaterial({ color: 0x968d8d, roughness: 0, metalness: 0.8 }),
-    new MeshStandardMaterial({
-      color: 0xb007ed,
-      roughness: 0.5,
-      metalness: 0.4,
+    new THREE.MeshNormalMaterial(),
+    new THREE.MeshStandardMaterial({
+      color: 0x4f46e5,
+      roughness: 0.1,
+      metalness: 0.9,
+      envMapIntensity: 1.5,
+    }),
+    new THREE.MeshStandardMaterial({
+      color: 0xec4899,
+      roughness: 0.3,
+      metalness: 0.7,
       wireframe: true,
     }),
-    new MeshStandardMaterial({
-      color: 0x07c7ed,
-      roughness: 0.44,
-      metalness: 0.4,
-      vertexColors: true,
-    }),
-    new MeshStandardMaterial({ color: 0x27ae60, roughness: 0.1 }),
-    new MeshStandardMaterial({ color: 0xe67e22, roughness: 0.3 }),
-    new MeshStandardMaterial({
-      color: 0xe67e22,
-      roughness: 0.01,
-      metalness: 0.4,
+    new THREE.MeshStandardMaterial({
+      color: 0x10b981,
+      roughness: 0.2,
+      metalness: 0.8,
+      envMapIntensity: 2,
     }),
   ];
 
-  return geometries.map(({ position, r, geometry }) => {
-    return (
-      <Geometry
-        key={JSON.stringify(position)}
-        position={position.map((p) => p * 2)}
-        geometry={geometry}
-        r={r}
-        materials={materials}
-      />
-    );
-  });
+  return geometriesConfig.map((config, i) => (
+    <Geometry
+      key={i}
+      position={config.position.map((p) => p * scaleFactor)}
+      r={config.r * scaleFactor}
+      type={config.type}
+      size={config.size * scaleFactor}
+      materials={materials}
+      index={i}
+    />
+  ));
 }
 
-function Geometry({ position, r, geometry, materials }) {
+function Geometry({ position, r, type, size, materials, index }) {
   const meshRef = useRef();
-  useEffect(() => {
-    gsap.fromTo(
-      meshRef.current.scale,
-      { x: 0.001, y: 0.001, z: 0.001 },
-      {
-        x: 1,
-        y: 1,
-        z: 1,
-        duration: 1,
-        ease: "elastic.out(1, 0.3)",
-        delay: 0.3,
-      },
-    );
-  }, []);
+  const [clicked, setClicked] = useState(false);
+  const [hovered, setHovered] = useState(false);
 
-  function handleClick(e) {
-    const mesh = e.object;
+  // Spring animasyonu için
+  const { scale, rotation } = useSpring({
+    scale: clicked ? 1.3 : hovered ? 1.1 : 1,
+    rotation: clicked ? [Math.PI * 2, Math.PI * 2, Math.PI * 2] : [0, 0, 0],
+    config: { mass: 1, tension: 280, friction: 60 },
+  });
 
-    gsap.to(mesh.rotation, {
-      x: `+=${gsap.utils.random(0, 2)}`,
-      y: `+=${gsap.utils.random(0, 2)}`,
-      z: `+=${gsap.utils.random(0, 2)}`,
-      duration: 1,
-      ease: "elastic.out(1, 0.5)",
-    });
+  // Giriş animasyonu
+  const { entryScale } = useSpring({
+    from: { entryScale: 0 },
+    to: { entryScale: 1 },
+    delay: index * 200,
+    config: { mass: 1, tension: 180, friction: 12 },
+  });
 
-    mesh.material = gsap.utils.random(materials);
+  let geometry;
+  switch (type) {
+    case "Icosahedron":
+      geometry = new THREE.IcosahedronGeometry(size, 0);
+      break;
+    case "Capsule":
+      geometry = new THREE.CapsuleGeometry(size / 2, size, 4, 8);
+      break;
+    case "TorusKnot":
+      geometry = new THREE.TorusKnotGeometry(size / 2, size / 4, 64, 8, 2, 3);
+      break;
+    default:
+      geometry = new THREE.SphereGeometry(size);
+  }
+
+  function handleClick() {
+    setClicked(!clicked);
+    // Malzeme değiştir
+    if (meshRef.current) {
+      meshRef.current.material =
+        materials[Math.floor(Math.random() * materials.length)];
+    }
   }
 
   return (
-    <group ref={meshRef} position={position}>
-      <Float speed={5 * r} rotationIntensity={6 * r}>
-        <mesh
-          onClick={handleClick}
+    <animated.group position={position} scale={entryScale}>
+      <Float
+        speed={3 + r * 2}
+        rotationIntensity={4 + r * 3}
+        floatIntensity={2 + r}
+      >
+        <animated.mesh
+          ref={meshRef}
           geometry={geometry}
-          material={gsap.utils.random(materials)}
+          material={materials[index % materials.length]}
           castShadow
           receiveShadow
+          scale={scale}
+          rotation={rotation}
+          onClick={handleClick}
           onPointerEnter={() => {
+            setHovered(true);
             document.body.style.cursor = "pointer";
           }}
           onPointerLeave={() => {
+            setHovered(false);
             document.body.style.cursor = "default";
           }}
-        ></mesh>
+        />
       </Float>
-    </group>
+    </animated.group>
   );
 }
 

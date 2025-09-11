@@ -101,7 +101,7 @@ const IDEBox = ({ children }) => {
         <IDEPages />
         <IDELocation />
         <div
-          className={`scrollbar-hide ide-box-children relative flex flex-1 overflow-x-hidden overflow-y-scroll px-3 ${
+          className={`ide-box-children relative flex flex-1 overflow-x-hidden scroll-auto px-3 ${
             ideIsFullScreen
               ? "text-2xl sm:text-3xl md:text-4xl"
               : "text-xl sm:text-2xl md:text-3xl"

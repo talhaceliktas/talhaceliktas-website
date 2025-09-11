@@ -1,7 +1,5 @@
-import React from "react";
-
 const Page = () => {
-  return <div className="flex justify-center">df</div>;
+  return <div>Skills</div>;
 };
 
 export default Page;

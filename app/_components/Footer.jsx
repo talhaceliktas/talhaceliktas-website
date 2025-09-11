@@ -102,38 +102,37 @@ const Footer = () => {
           target="_blank"
           className="text-primary-50 hover:text-primary-300 duration-300"
         >
-          <MdMail size={30} />
+          <MdMail className="size-5 md:size-7" />
         </a>
         <a
           href="https://github.com/talhaceliktas"
           target="_blank"
           className="text-primary-50 hover:text-primary-300 duration-300"
         >
-          <FaGithub size={30} />
+          <FaGithub className="size-5 md:size-7" />
         </a>
         <a
           href="https://www.instagram.com/sl3epwy/"
           target="_blank"
           className="text-primary-50 hover:text-primary-300 duration-300"
         >
-          <FaInstagram size={30} />
+          <FaInstagram className="size-5 md:size-7" />
         </a>
         <a
           href="https://www.linkedin.com/in/talhaceliktas/"
           target="_blank"
           className="text-primary-50 hover:text-primary-300 duration-300"
         >
-          <FaLinkedin size={30} />
+          <FaLinkedin className="size-5 md:size-7" />
         </a>
       </div>
 
-      <div className="flex items-center gap-x-2">
+      <div className="flex items-center gap-x-2 text-sm md:text-base">
         coded with
         <FaHeart
           id="footerHeart"
-          className="cursor-pointer"
+          className="size-4 cursor-pointer md:size-5"
           fill="red"
-          size={20}
         />
       </div>
     </div>

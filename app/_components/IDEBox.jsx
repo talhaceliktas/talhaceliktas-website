@@ -97,7 +97,7 @@ const IDEBox = ({ children }) => {
         {
           maxWidth: ideIsFullScreen ? "100vw" : "1280px",
           maxHeight: ideIsFullScreen
-            ? "85vh"
+            ? "80dvh"
             : window.innerWidth > 798
               ? "600px"
               : "500px",

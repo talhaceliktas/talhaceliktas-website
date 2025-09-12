@@ -1,205 +1,177 @@
-"use client";
-
-import React from "react";
-import { Canvas } from "@react-three/fiber";
-import {
-  Float,
-  ContactShadows,
-  Environment,
-  OrbitControls,
-} from "@react-three/drei";
-import { useSpring, animated } from "@react-spring/three";
-import { useEffect, useRef, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 
-const AboutAnimation = () => {
-  const canvasRef = useRef();
-  const [scaleFactor, setScaleFactor] = useState(1);
-  const [isMobile, setIsMobile] = useState(false);
+function AnimatedModel({ onAnimationsLoaded, playAnimRef }) {
+  const { scene, animations } = useGLTF("/Meshy_Merged_Animations.glb");
+  const mixer = useRef();
+  const clock = useRef(new THREE.Clock());
+  const [currentAction, setCurrentAction] = useState(null);
 
   useEffect(() => {
-    function handleResize() {
-      if (!canvasRef.current) return;
-      const { width } = canvasRef.current.getBoundingClientRect();
+    if (!animations || animations.length === 0) return;
 
-      // Parent div boyutlarına göre scale hesaplama
-      const baseWidth = width < 768 ? 176 : 384; // w-44 = 176px, md:w-96 = 384px
-      setScaleFactor(width / baseWidth);
-      setIsMobile(width < 768);
+    mixer.current = new THREE.AnimationMixer(scene);
+
+    // Başlangıçta "Wave Hand" animasyonunu oynat
+    const waveAnimation =
+      animations.find((a) => a.name === "Wave_One_Hand") || animations[0];
+    if (waveAnimation) {
+      const action = mixer.current.clipAction(waveAnimation);
+      action.play();
+      setCurrentAction(action);
     }
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+    if (onAnimationsLoaded) onAnimationsLoaded(animations);
+
+    return () => {
+      if (mixer.current) mixer.current.stopAllAction();
+    };
+  }, [scene, animations, onAnimationsLoaded]);
+
+  useEffect(() => {
+    if (playAnimRef) {
+      playAnimRef.current = (name) => {
+        const clip = animations.find((a) => a.name === name);
+        if (!clip) return;
+
+        if (currentAction) {
+          currentAction.stop();
+        }
+
+        const newAction = mixer.current.clipAction(clip);
+        newAction.reset().play();
+        setCurrentAction(newAction);
+      };
+    }
+  }, [animations, currentAction]);
+
+  useFrame(() => {
+    if (mixer.current) {
+      mixer.current.update(clock.current.getDelta());
+    }
+  });
+
+  return <primitive object={scene} scale={[1, 1, 1]} />;
+}
+
+export default function Model() {
+  const [animations, setAnimations] = useState([]);
+  const [showButtons, setShowButtons] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const playAnimRef = useRef();
+  const buttonContainerRef = useRef();
+
+  useEffect(() => {
+    // Animasyonlar yüklendikten sonra butonları animate et
+    if (animations.length > 0 && !showButtons) {
+      setTimeout(() => {
+        setShowButtons(true);
+        if (buttonContainerRef.current) {
+          buttonContainerRef.current.style.opacity = "0";
+          buttonContainerRef.current.style.transform = "translateY(-10px)";
+
+          requestAnimationFrame(() => {
+            buttonContainerRef.current.style.transition = "all 0.6s ease-out";
+            buttonContainerRef.current.style.opacity = "1";
+            buttonContainerRef.current.style.transform = "translateY(0px)";
+          });
+        }
+      }, 2000);
+    }
+  }, [animations, showButtons]);
+
+  const getAnimationDisplayName = (name) => {
+    const nameMap = {
+      Backflip: "Flip",
+      Fall1: "Fall",
+      Running: "Run",
+      Wake_Up_and_Look_Up: "Wake",
+      Walking: "Walk",
+      Wave_One_Hand: "Wave",
+      air_squat: "Squat",
+    };
+    return nameMap[name] || name;
+  };
+
+  const getAnimationIcon = (name) => {
+    const iconMap = {
+      Backflip: "🤸",
+      Fall1: "💥",
+      Running: "🏃",
+      Wake_Up_and_Look_Up: "😴",
+      Walking: "🚶",
+      Wave_One_Hand: "👋",
+      air_squat: "🏋️",
+    };
+    return iconMap[name] || "🎭";
+  };
 
   return (
-    <div className="h-full w-full">
+    <div
+      className="relative h-full w-full"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <Canvas
-        ref={canvasRef}
-        className="h-full w-full"
-        camera={{
-          position: isMobile ? [0, 15, 25] : [0, 20, 35],
-          fov: isMobile ? 60 : 45,
-        }}
         shadows
+        camera={{ position: [0, 2, 3.5], fov: 50 }}
+        className="h-full w-full"
+        style={{ backgroundColor: "transparent" }}
       >
-        <directionalLight
-          position={isMobile ? [15, 15, 15] : [25, 25, 25]}
-          intensity={isMobile ? 0.8 : 1.2}
-          castShadow
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-          shadow-camera-far={50}
-          shadow-camera-left={-20}
-          shadow-camera-right={20}
-          shadow-camera-top={20}
-          shadow-camera-bottom={-20}
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
+
+        <AnimatedModel
+          onAnimationsLoaded={setAnimations}
+          playAnimRef={playAnimRef}
         />
-        <ambientLight intensity={0.3} />
-        <ContactShadows
-          position={[0, -8, 0]}
-          opacity={0.4}
-          scale={isMobile ? 20 : 40}
-          blur={2}
-          far={20}
-        />
-        <Geometries scaleFactor={scaleFactor} isMobile={isMobile} />
-        <Environment preset="city" />
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate={true}
-          autoRotateSpeed={0.5}
-          maxPolarAngle={Math.PI / 2}
-          minPolarAngle={Math.PI / 4}
-        />
+        <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
       </Canvas>
+
+      {/* Animation Controls - Sadece hover'da görün */}
+      {showButtons && (
+        <div
+          ref={buttonContainerRef}
+          className={`absolute bottom-2 left-1/2 z-10 -translate-x-1/2 transform transition-opacity duration-300 ${
+            isHovered ? "opacity-100" : "opacity-0 sm:opacity-30"
+          }`}
+        >
+          {/* Mobile ve Desktop için tek çözüm - yatay scroll */}
+          <div className="scrollbar-hide flex gap-1 overflow-x-auto px-2 pb-1 sm:gap-2">
+            <div className="flex min-w-max gap-1 sm:gap-2">
+              {animations.map((animation) => (
+                <button
+                  key={animation.name}
+                  onClick={() =>
+                    playAnimRef.current && playAnimRef.current(animation.name)
+                  }
+                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/20 text-xs backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white/30 active:scale-95 sm:h-8 sm:w-8 sm:text-sm md:h-10 md:w-10 md:text-base"
+                  title={getAnimationDisplayName(animation.name)}
+                >
+                  {getAnimationIcon(animation.name)}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Küçük ipucu - sadece desktop'ta görün */}
+      <div className="pointer-events-none absolute right-1 bottom-0 hidden text-[10px] text-black/20 select-none lg:block">
+        Hover
+      </div>
+
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
-};
-
-function Geometries({ scaleFactor, isMobile }) {
-  // Mobile ve desktop için farklı pozisyonlar
-  const geometriesConfig = isMobile
-    ? [
-        { position: [0, 2, 0], r: 0.4, type: "Icosahedron", size: 3 },
-        { position: [6, -2, -3], r: 0.3, type: "Capsule", size: 2.5 },
-        { position: [-6, -2, -3], r: 0.35, type: "TorusKnot", size: 3 },
-      ]
-    : [
-        { position: [0, 5, 0], r: 0.3, type: "Icosahedron", size: 4 },
-        { position: [12, -3, -5], r: 0.4, type: "Capsule", size: 3.5 },
-        { position: [-12, -3, -5], r: 0.35, type: "TorusKnot", size: 4 },
-      ];
-
-  const materials = [
-    new THREE.MeshNormalMaterial(),
-    new THREE.MeshStandardMaterial({
-      color: 0x4f46e5,
-      roughness: 0.1,
-      metalness: 0.9,
-      envMapIntensity: 1.5,
-    }),
-    new THREE.MeshStandardMaterial({
-      color: 0xec4899,
-      roughness: 0.3,
-      metalness: 0.7,
-      wireframe: true,
-    }),
-    new THREE.MeshStandardMaterial({
-      color: 0x10b981,
-      roughness: 0.2,
-      metalness: 0.8,
-      envMapIntensity: 2,
-    }),
-  ];
-
-  return geometriesConfig.map((config, i) => (
-    <Geometry
-      key={i}
-      position={config.position.map((p) => p * scaleFactor)}
-      r={config.r * scaleFactor}
-      type={config.type}
-      size={config.size * scaleFactor}
-      materials={materials}
-      index={i}
-    />
-  ));
 }
-
-function Geometry({ position, r, type, size, materials, index }) {
-  const meshRef = useRef();
-  const [clicked, setClicked] = useState(false);
-  const [hovered, setHovered] = useState(false);
-
-  // Spring animasyonu için
-  const { scale, rotation } = useSpring({
-    scale: clicked ? 1.3 : hovered ? 1.1 : 1,
-    rotation: clicked ? [Math.PI * 2, Math.PI * 2, Math.PI * 2] : [0, 0, 0],
-    config: { mass: 1, tension: 280, friction: 60 },
-  });
-
-  // Giriş animasyonu
-  const { entryScale } = useSpring({
-    from: { entryScale: 0 },
-    to: { entryScale: 1 },
-    delay: index * 200,
-    config: { mass: 1, tension: 180, friction: 12 },
-  });
-
-  let geometry;
-  switch (type) {
-    case "Icosahedron":
-      geometry = new THREE.IcosahedronGeometry(size, 0);
-      break;
-    case "Capsule":
-      geometry = new THREE.CapsuleGeometry(size / 2, size, 4, 8);
-      break;
-    case "TorusKnot":
-      geometry = new THREE.TorusKnotGeometry(size / 2, size / 4, 64, 8, 2, 3);
-      break;
-    default:
-      geometry = new THREE.SphereGeometry(size);
-  }
-
-  function handleClick() {
-    setClicked(!clicked);
-    // Malzeme değiştir
-    if (meshRef.current) {
-      meshRef.current.material =
-        materials[Math.floor(Math.random() * materials.length)];
-    }
-  }
-
-  return (
-    <animated.group position={position} scale={entryScale}>
-      <Float
-        speed={3 + r * 2}
-        rotationIntensity={4 + r * 3}
-        floatIntensity={2 + r}
-      >
-        <animated.mesh
-          ref={meshRef}
-          geometry={geometry}
-          material={materials[index % materials.length]}
-          castShadow
-          receiveShadow
-          scale={scale}
-          rotation={rotation}
-          onClick={handleClick}
-          onPointerEnter={() => {
-            setHovered(true);
-            document.body.style.cursor = "pointer";
-          }}
-          onPointerLeave={() => {
-            setHovered(false);
-            document.body.style.cursor = "default";
-          }}
-        />
-      </Float>
-    </animated.group>
-  );
-}
-
-export default AboutAnimation;

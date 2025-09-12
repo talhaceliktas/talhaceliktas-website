@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import toast from "react-hot-toast";
 
 function AnimatedModel({ onAnimationsLoaded, playAnimRef }) {
   const { scene, animations } = useGLTF("/Meshy_Merged_Animations.glb");
@@ -55,7 +56,12 @@ export default function AboutAnimation() {
 
   useEffect(() => {
     if (animations.length > 0 && !showButtons) {
-      setTimeout(() => setShowButtons(true), 1500);
+      setTimeout(() => {
+        (setShowButtons(true),
+          toast("You can switch the character's animations with the buttons.", {
+            icon: "🔥",
+          }));
+      }, 1500);
     }
   }, [animations, showButtons]);
 
@@ -74,7 +80,10 @@ export default function AboutAnimation() {
       <div className="min-h-0 flex-1">
         <Canvas
           shadows
-          camera={{ position: [0, 2, 3], fov: 60 }}
+          camera={{
+            position: [0, 2, 3],
+            fov: window.innerWidth < 798 ? 70 : 58,
+          }}
           className="h-full w-full"
           style={{ backgroundColor: "transparent" }}
         >
@@ -96,8 +105,8 @@ export default function AboutAnimation() {
       </div>
 
       {showButtons && (
-        <div className="flex w-full justify-center rounded-b-lg bg-white/50 px-2 py-2">
-          <div className="flex max-w-full flex-wrap justify-center gap-1.5">
+        <div className="absolute right-0 bottom-0 left-0 flex justify-center bg-white/50 px-2 py-2 backdrop-blur-sm">
+          <div className="flex flex-wrap justify-center gap-1.5">
             {animations.map((animation) => {
               const config = animationConfig[animation.name] || {
                 name: animation.name,
@@ -107,7 +116,7 @@ export default function AboutAnimation() {
                 <button
                   key={animation.name}
                   onClick={() => playAnimRef.current?.(animation.name)}
-                  className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-white/90 text-sm shadow-sm backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:shadow-md active:scale-95"
+                  className="flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 bg-white/90 text-sm shadow-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:shadow-md active:scale-95 md:h-8 md:w-8"
                   title={config.name}
                   aria-label={`Play ${config.name} animation`}
                 >

@@ -5,7 +5,7 @@ import AboutAnimation from "../_lib/tree/AboutAnimation";
 
 const Page = () => {
   return (
-    <div className="about-div flex w-full">
+    <div className="about-div flex w-full gap-x-2">
       <p className="about-text text-base md:text-2xl">
         Hi there! I'm Talha, a Full Stack Developer who loves turning ideas into
         reality. I specialize in building responsive, user-friendly web

@@ -97,7 +97,7 @@ const IDEBox = ({ children }) => {
         {
           maxWidth: ideIsFullScreen ? "100vw" : "1280px",
           maxHeight: ideIsFullScreen
-            ? "80dvh"
+            ? "82dvh"
             : window.innerWidth > 798
               ? "600px"
               : "500px",
@@ -107,7 +107,9 @@ const IDEBox = ({ children }) => {
   }, [ideIsFullScreen]);
 
   return (
-    <div className="ide-box-outside mx-4">
+    <div
+      className={`ide-box-outside ${ideIsFullScreen && window.innerWidth < 798 ? "mx-0" : "mx-4"}`}
+    >
       <div
         ref={boxRef}
         className="ide-box bg-primary-700 font-jetbrains-mono mx-auto my-0 flex h-[4000px] min-w-[300px] flex-col gap-y-2 rounded-md"

@@ -10,36 +10,30 @@ function AnimatedModel({ onAnimationsLoaded, playAnimRef }) {
   const [currentAction, setCurrentAction] = useState(null);
 
   useEffect(() => {
-    if (!animations || animations.length === 0) return;
+    if (!animations?.length) return;
 
     mixer.current = new THREE.AnimationMixer(scene);
-
-    // Başlangıçta "Wave Hand" animasyonunu oynat
-    const waveAnimation =
+    const defaultAnim =
       animations.find((a) => a.name === "Wave_One_Hand") || animations[0];
-    if (waveAnimation) {
-      const action = mixer.current.clipAction(waveAnimation);
+
+    if (defaultAnim) {
+      const action = mixer.current.clipAction(defaultAnim);
       action.play();
       setCurrentAction(action);
     }
 
-    if (onAnimationsLoaded) onAnimationsLoaded(animations);
+    onAnimationsLoaded?.(animations);
 
-    return () => {
-      if (mixer.current) mixer.current.stopAllAction();
-    };
+    return () => mixer.current?.stopAllAction();
   }, [scene, animations, onAnimationsLoaded]);
 
   useEffect(() => {
     if (playAnimRef) {
       playAnimRef.current = (name) => {
         const clip = animations.find((a) => a.name === name);
-        if (!clip) return;
+        if (!clip || !mixer.current) return;
 
-        if (currentAction) {
-          currentAction.stop();
-        }
-
+        currentAction?.stop();
         const newAction = mixer.current.clipAction(clip);
         newAction.reset().play();
         setCurrentAction(newAction);
@@ -48,130 +42,82 @@ function AnimatedModel({ onAnimationsLoaded, playAnimRef }) {
   }, [animations, currentAction]);
 
   useFrame(() => {
-    if (mixer.current) {
-      mixer.current.update(clock.current.getDelta());
-    }
+    mixer.current?.update(clock.current.getDelta());
   });
 
-  return <primitive object={scene} scale={[1, 1, 1]} />;
+  return <primitive object={scene} />;
 }
 
-export default function Model() {
+export default function AboutAnimation() {
   const [animations, setAnimations] = useState([]);
   const [showButtons, setShowButtons] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const playAnimRef = useRef();
-  const buttonContainerRef = useRef();
 
   useEffect(() => {
-    // Animasyonlar yüklendikten sonra butonları animate et
     if (animations.length > 0 && !showButtons) {
-      setTimeout(() => {
-        setShowButtons(true);
-        if (buttonContainerRef.current) {
-          buttonContainerRef.current.style.opacity = "0";
-          buttonContainerRef.current.style.transform = "translateY(-10px)";
-
-          requestAnimationFrame(() => {
-            buttonContainerRef.current.style.transition = "all 0.6s ease-out";
-            buttonContainerRef.current.style.opacity = "1";
-            buttonContainerRef.current.style.transform = "translateY(0px)";
-          });
-        }
-      }, 2000);
+      setTimeout(() => setShowButtons(true), 1500);
     }
   }, [animations, showButtons]);
 
-  const getAnimationDisplayName = (name) => {
-    const nameMap = {
-      Backflip: "Flip",
-      Fall1: "Fall",
-      Running: "Run",
-      Wake_Up_and_Look_Up: "Wake",
-      Walking: "Walk",
-      Wave_One_Hand: "Wave",
-      air_squat: "Squat",
-    };
-    return nameMap[name] || name;
-  };
-
-  const getAnimationIcon = (name) => {
-    const iconMap = {
-      Backflip: "🤸",
-      Fall1: "💥",
-      Running: "🏃",
-      Wake_Up_and_Look_Up: "😴",
-      Walking: "🚶",
-      Wave_One_Hand: "👋",
-      air_squat: "🏋️",
-    };
-    return iconMap[name] || "🎭";
+  const animationConfig = {
+    Backflip: { name: "Flip", icon: "🤸" },
+    Fall1: { name: "Fall", icon: "💥" },
+    Running: { name: "Run", icon: "🏃" },
+    Wake_Up_and_Look_Up: { name: "Wake", icon: "😴" },
+    Walking: { name: "Walk", icon: "🚶" },
+    Wave_One_Hand: { name: "Wave", icon: "👋" },
+    air_squat: { name: "Squat", icon: "🏋️" },
   };
 
   return (
-    <div
-      className="relative h-full w-full"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <Canvas
-        shadows
-        camera={{ position: [0, 2, 3.5], fov: 50 }}
-        className="h-full w-full"
-        style={{ backgroundColor: "transparent" }}
-      >
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 5, 5]} intensity={0.8} castShadow />
-
-        <AnimatedModel
-          onAnimationsLoaded={setAnimations}
-          playAnimRef={playAnimRef}
-        />
-        <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
-      </Canvas>
-
-      {/* Animation Controls - Sadece hover'da görün */}
-      {showButtons && (
-        <div
-          ref={buttonContainerRef}
-          className={`absolute bottom-2 left-1/2 z-10 -translate-x-1/2 transform transition-opacity duration-300 ${
-            isHovered ? "opacity-100" : "opacity-0 sm:opacity-30"
-          }`}
+    <div className="relative flex h-full w-full flex-col">
+      <div className="min-h-0 flex-1">
+        <Canvas
+          shadows
+          camera={{ position: [0, 2, 3], fov: 60 }}
+          className="h-full w-full"
+          style={{ backgroundColor: "transparent" }}
         >
-          {/* Mobile ve Desktop için tek çözüm - yatay scroll */}
-          <div className="scrollbar-hide flex gap-1 overflow-x-auto px-2 pb-1 sm:gap-2">
-            <div className="flex min-w-max gap-1 sm:gap-2">
-              {animations.map((animation) => (
+          <ambientLight intensity={0.7} />
+          <directionalLight position={[3, 4, 3]} intensity={0.9} castShadow />
+          <pointLight position={[-2, 2, 2]} intensity={0.4} />
+
+          <AnimatedModel
+            onAnimationsLoaded={setAnimations}
+            playAnimRef={playAnimRef}
+          />
+          <OrbitControls
+            enablePan={false}
+            minDistance={1.5}
+            maxDistance={4}
+            maxPolarAngle={Math.PI / 1.8}
+          />
+        </Canvas>
+      </div>
+
+      {showButtons && (
+        <div className="flex w-full justify-center rounded-b-lg bg-white/50 px-2 py-2">
+          <div className="flex max-w-full flex-wrap justify-center gap-1.5">
+            {animations.map((animation) => {
+              const config = animationConfig[animation.name] || {
+                name: animation.name,
+                icon: "🎭",
+              };
+              return (
                 <button
                   key={animation.name}
-                  onClick={() =>
-                    playAnimRef.current && playAnimRef.current(animation.name)
-                  }
-                  className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full border border-white/30 bg-white/20 text-xs backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white/30 active:scale-95 sm:h-8 sm:w-8 sm:text-sm md:h-10 md:w-10 md:text-base"
-                  title={getAnimationDisplayName(animation.name)}
+                  onClick={() => playAnimRef.current?.(animation.name)}
+                  className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-white/90 text-sm shadow-sm backdrop-blur-sm transition-all duration-200 hover:scale-110 hover:bg-white hover:shadow-md active:scale-95"
+                  title={config.name}
+                  aria-label={`Play ${config.name} animation`}
                 >
-                  {getAnimationIcon(animation.name)}
+                  {config.icon}
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
         </div>
       )}
-
-      {/* Küçük ipucu - sadece desktop'ta görün */}
-      <div className="pointer-events-none absolute right-1 bottom-0 hidden text-[10px] text-black/20 select-none lg:block">
-        Hover
-      </div>
-
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </div>
   );
 }

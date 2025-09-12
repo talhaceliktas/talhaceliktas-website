@@ -5,7 +5,7 @@ import * as THREE from "three";
 import toast from "react-hot-toast";
 
 function AnimatedModel({ onAnimationsLoaded, playAnimRef }) {
-  const { scene, animations } = useGLTF("/Meshy_Merged_Animations.glb");
+  const { scene, animations } = useGLTF("/my3d.glb");
   const mixer = useRef();
   const clock = useRef(new THREE.Clock());
   const [currentAction, setCurrentAction] = useState(null);
@@ -58,22 +58,34 @@ export default function AboutAnimation() {
     if (animations.length > 0 && !showButtons) {
       setTimeout(() => {
         (setShowButtons(true),
-          toast("You can switch the character's animations with the buttons.", {
-            icon: "🔥",
-          }));
+          toast(
+            "You can switch the character's animations with the buttons or rotate the camera",
+            {
+              icon: "🔥",
+              duration: 3,
+            },
+          ));
       }, 1500);
     }
   }, [animations, showButtons]);
 
   const animationConfig = {
-    Backflip: { name: "Flip", icon: "🤸" },
-    Fall1: { name: "Fall", icon: "💥" },
-    Running: { name: "Run", icon: "🏃" },
-    Wake_Up_and_Look_Up: { name: "Wake", icon: "😴" },
-    Walking: { name: "Walk", icon: "🚶" },
+    Backflip: { name: "Flip", icon: "🤸‍♂️" },
+    Fall1: { name: "Fall", icon: "🤕" },
+    Hip_Hop_Dance_3: { name: "Hip Hop Dance", icon: "🕺" },
+    Running: { name: "Run", icon: "🏃‍♂️" },
+    Jump_Rope: { name: "Jump Rope", icon: "🪢" },
+    Wake_Up_and_Look_Up: { name: "Wake", icon: "🌅" },
     Wave_One_Hand: { name: "Wave", icon: "👋" },
-    air_squat: { name: "Squat", icon: "🏋️" },
+    air_squat: { name: "Squat", icon: "🏋️‍♂️" },
   };
+
+  // Walking animasyonunu filtrele
+  const filteredAnimations = animations.filter(
+    (animation) =>
+      !animation.name.toLowerCase().includes("walking") &&
+      !animation.name.toLowerCase().includes("walk"),
+  );
 
   return (
     <div className="relative flex h-full w-full flex-col">
@@ -107,7 +119,7 @@ export default function AboutAnimation() {
       {showButtons && (
         <div className="absolute right-0 bottom-0 left-0 flex justify-center bg-white/50 px-2 py-2 backdrop-blur-sm">
           <div className="flex flex-wrap justify-center gap-1.5">
-            {animations.map((animation) => {
+            {filteredAnimations.map((animation) => {
               const config = animationConfig[animation.name] || {
                 name: animation.name,
                 icon: "🎭",

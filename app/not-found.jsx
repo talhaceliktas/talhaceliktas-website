@@ -7,7 +7,7 @@ function NotFound() {
   const { resetOpenedPages } = useStore();
 
   return (
-    <main className="mt-4 space-y-6 text-center">
+    <main className="mt-4 flex w-full flex-col items-center justify-center space-y-6 text-center">
       <h1 className="text-3xl font-semibold">Looks like you’re lost 😅</h1>
       <Link
         href="/"

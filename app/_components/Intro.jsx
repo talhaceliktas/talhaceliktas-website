@@ -86,7 +86,7 @@ const Intro = () => {
         </Link>
       </div>
       <button
-        className="fixed right-5 bottom-5 cursor-pointer"
+        className="fixed right-5 bottom-5 cursor-pointer px-3 py-1 text-sm text-white duration-300 hover:bg-gray-600"
         onClick={() => setIntroIsVisible(false)}
       >
         skip intro?

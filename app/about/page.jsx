@@ -1,6 +1,6 @@
 "use client";
 
-import AboutAnimation from "../_lib/tree/AboutAnimation";
+import AboutAnimation from "../_components/AboutAnimation";
 import { useGSAP } from "@gsap/react";
 import { ScrambleTextPlugin, SplitText } from "gsap/all";
 import gsap from "gsap";
@@ -112,6 +112,22 @@ const Page = () => {
     if (mainTl.current) {
       mainTl.current.progress(1);
       setAnimationIsFinished(true);
+
+      const skipTl = gsap.timeline();
+
+      sentences.forEach((sentence) => {
+        skipTl.to(
+          helperText2.current,
+          {
+            duration: 1,
+            scrambleText: { text: sentence, chars: "<>{}[]#!?" },
+            ease: "power1.inOut",
+            color: "#3a9cb9",
+          },
+          ">",
+        );
+        skipTl.to({}, { duration: 2 });
+      });
     }
   };
 

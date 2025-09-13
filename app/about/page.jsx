@@ -2,18 +2,19 @@
 
 import AboutAnimation from "../_lib/tree/AboutAnimation";
 import { useGSAP } from "@gsap/react";
-import { GSDevTools, ScrambleTextPlugin, SplitText } from "gsap/all";
+import { ScrambleTextPlugin, SplitText } from "gsap/all";
 import gsap from "gsap";
 import { LuTextCursor } from "react-icons/lu";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useStore } from "../store/store";
 
-gsap.registerPlugin(ScrambleTextPlugin, GSDevTools, SplitText);
+gsap.registerPlugin(ScrambleTextPlugin, SplitText);
 
 const Page = () => {
   const helperText1 = useRef();
   const helperText2 = useRef();
   const fullText = useRef();
+  const [animationIsFinished, setAnimationIsFinished] = useState(false);
 
   const { ideIsFullScreen } = useStore();
 
@@ -24,18 +25,26 @@ const Page = () => {
     "TypeScript Expert",
   ];
 
+  let mainTl = useRef();
+
   useGSAP(() => {
-    const mainTl = gsap.timeline();
+    setAnimationIsFinished(false);
+
+    mainTl.current = gsap.timeline();
 
     const tl1 = gsap.timeline();
 
-    gsap.to(".cursor-1, .cursor-2", {
-      opacity: 0,
-      repeat: -1,
-      yoyo: true,
-      duration: 0.5,
-      ease: "power1.inOut",
-    });
+    gsap.fromTo(
+      ".cursor-1, .cursor-2",
+      { opacity: 0.6 },
+      {
+        opacity: 0,
+        repeat: -1,
+        yoyo: true,
+        duration: 1,
+        ease: "power1.inOut",
+      },
+    );
 
     tl1
       .to(
@@ -64,22 +73,10 @@ const Page = () => {
           );
         },
       })
-      .to(
-        ".cursor-1",
-        {
-          autoAlpha: 0,
-        },
-        ">",
-      );
+      .to(".cursor-1", { autoAlpha: 0 }, ">");
 
     const tl2 = gsap.timeline({ repeat: -1 });
-    tl2.to(
-      ".cursor-2",
-      {
-        autoAlpha: 1,
-      },
-      ">",
-    );
+    tl2.to(".cursor-2", { autoAlpha: 1 }, ">");
     sentences.forEach((sentence) => {
       tl2.to(
         helperText2.current,
@@ -96,7 +93,6 @@ const Page = () => {
 
     let split = SplitText.create(fullText.current, { type: "words" });
     const tl3 = gsap.timeline();
-
     tl3.from(split.words, {
       y: 60,
       autoAlpha: 0,
@@ -104,17 +100,23 @@ const Page = () => {
       filter: "blur(6px)",
       stagger: 0.05,
       ease: "power3.out",
+      onComplete: () => setAnimationIsFinished(true),
     });
 
-    mainTl.add(tl1);
-    mainTl.add(tl2);
-    mainTl.add(tl3, "<+1");
-
-    GSDevTools.create({ animation: mainTl });
+    mainTl.current.add(tl1);
+    mainTl.current.add(tl2);
+    mainTl.current.add(tl3, "<+1");
   });
 
+  const skipAnimation = () => {
+    if (mainTl.current) {
+      mainTl.current.progress(1);
+      setAnimationIsFinished(true);
+    }
+  };
+
   return (
-    <div className="about-div text-primary-50 flex w-full justify-between gap-x-2">
+    <div className="about-div text-primary-50 relative flex w-full justify-between gap-x-2">
       <div className="flex min-w-0 flex-1 flex-col space-y-2">
         <div className="flex items-center">
           <span
@@ -147,6 +149,16 @@ const Page = () => {
             backend performance, I enjoy every step of the development process.
           </p>
         </div>
+        {!animationIsFinished && (
+          <div className="relative flex-1">
+            <button
+              onClick={skipAnimation}
+              className="absolute right-4 bottom-4 cursor-pointer px-3 py-1 text-sm text-white duration-300 hover:bg-gray-600"
+            >
+              skip animation?
+            </button>
+          </div>
+        )}
       </div>
       <div className="w-28 flex-shrink-0 sm:w-44 md:w-96">
         <AboutAnimation />

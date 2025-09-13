@@ -53,19 +53,25 @@ const IDEBox = ({ children }) => {
             speed: 0.2,
           },
           onComplete: () =>
-            toast((t) => (
-              <p>
-                You can make the screen full-screen with the{" "}
-                <span className="r inline-block h-4 w-4 rounded-full bg-[#36C748]"></span>
-                or click
-                <button
-                  className="bg-primary-500 hover:bg-primary-600 ml-2 cursor-pointer rounded px-2 py-1 text-white duration-300"
-                  onClick={() => changeIdeIsFullScreen()}
-                >
-                  FullScreen
-                </button>
-              </p>
-            )),
+            toast(
+              (t) => (
+                <p>
+                  You can make the screen full-screen with the{" "}
+                  <span className="mr-2 inline-block h-4 w-4 rounded-full bg-[#36C748]"></span>
+                  or click
+                  <button
+                    className={`hover:bg-primary-600 ml-2 cursor-pointer rounded px-2 py-1 text-white duration-300 ${ideIsFullScreen ? "bg-primary-500" : "bg-gray-400"}`}
+                    onClick={() => {
+                      changeIdeIsFullScreen();
+                      toast.dismiss(t.id);
+                    }}
+                  >
+                    FullScreen
+                  </button>
+                </p>
+              ),
+              { duration: 5000 },
+            ),
         },
         "+=0.1",
       );

@@ -3,7 +3,6 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FaGithub, FaExternalLinkAlt, FaCertificate } from "react-icons/fa";
 import Certifications from "../_components/Certifications.jsx";
 import Projects from "../_components/Projects.jsx";
 

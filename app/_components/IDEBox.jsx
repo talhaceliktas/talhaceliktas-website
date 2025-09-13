@@ -12,7 +12,6 @@ import { useStore } from "../store/store";
 import IDETerminal from "./IDETerminal";
 import Footer from "./Footer";
 import toast from "react-hot-toast";
-import Navbar from "./Navbar";
 
 gsap.registerPlugin(ScrambleTextPlugin);
 

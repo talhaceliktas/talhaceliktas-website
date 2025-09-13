@@ -13,11 +13,7 @@ export default function HomeLayout({ children }) {
     <main>
       <Intro />
       <Navbar />
-      {!introIsVisible && (
-        <>
-          <IDEBox>{children}</IDEBox>
-        </>
-      )}
+      {!introIsVisible && <IDEBox>{children}</IDEBox>}
       <Toaster
         position="bottom-center"
         reverseOrder={false}

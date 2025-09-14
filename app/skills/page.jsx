@@ -150,7 +150,7 @@ const Page = () => {
       <div className="mx-auto max-w-7xl">
         <h1
           ref={titleRef}
-          className="text-primary-100 mb-16 text-center text-4xl font-bold md:text-5xl lg:text-6xl"
+          className="text-primary-100 mb-16 text-center text-2xl font-bold md:text-5xl lg:text-6xl"
         >
           Skills
         </h1>

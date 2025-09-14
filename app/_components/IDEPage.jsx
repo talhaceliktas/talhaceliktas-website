@@ -35,7 +35,7 @@ const IDEPage = ({ page }) => {
     <div className="ide-pages relative flex items-center justify-between border-2 border-gray-800 text-base md:text-xl">
       <Link
         href={`/${page.toLowerCase()}`}
-        className={`mr-4 flex flex-1 items-center gap-x-2 py-2 pl-2 md:mr-6 ${
+        className={`mr-2 flex flex-1 items-center gap-x-2 py-2 pl-2 sm:mr-4 md:mr-6 ${
           !pageIsCorrect && "text-red-500"
         }`}
       >

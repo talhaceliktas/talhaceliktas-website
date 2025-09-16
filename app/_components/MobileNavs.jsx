@@ -126,6 +126,15 @@ const MobileNavs = ({ toggleMobileMenu, isMobileMenuOpen }) => {
               Playground
             </NavLink>
           </div>
+          <div ref={addToRefs}>
+            <a
+              href="/TalhaCeliktasCV.pdf"
+              download
+              className="bg-primary-400 text-primary-700 hover:bg-primary-500 cursor-pointer rounded-xl px-3 py-2 text-lg"
+            >
+              Download CV
+            </a>
+          </div>
         </div>
 
         <a

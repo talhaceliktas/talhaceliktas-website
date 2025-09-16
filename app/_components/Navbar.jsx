@@ -140,15 +140,24 @@ const Navbar = () => {
         <NavLink href="playground">Playground</NavLink>
       </div>
 
-      <a
-        href="https://github.com/talhaceliktas"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="font-open-sans text-primary-300 hover:text-primary-400 relative hidden items-center justify-center gap-x-2 overflow-hidden text-xl font-semibold duration-300 md:flex"
-      >
-        <FiGithub size={30} />
-        GitHub
-      </a>
+      <div className="hidden items-center justify-center gap-x-6 md:flex">
+        <a
+          href="https://github.com/talhaceliktas"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-open-sans text-primary-300 hover:text-primary-400 relative hidden items-center justify-center gap-x-2 overflow-hidden text-xl font-semibold duration-300 md:flex"
+        >
+          <FiGithub size={30} />
+          GitHub
+        </a>
+        <a
+          href="/TalhaCeliktasCV.pdf"
+          download
+          className="bg-primary-400 text-primary-700 hover:bg-primary-500 cursor-pointer rounded-xl px-3 py-2 text-lg duration-300"
+        >
+          Download CV
+        </a>
+      </div>
 
       <MobileNavButton
         isMobileMenuOpen={isMobileMenuOpen}

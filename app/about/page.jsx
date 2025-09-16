@@ -169,7 +169,7 @@ const Page = () => {
           <div className="relative flex-1">
             <button
               onClick={skipAnimation}
-              className="absolute right-4 bottom-4 cursor-pointer px-3 py-1 text-sm text-white duration-300 hover:bg-gray-600"
+              className="absolute right-4 bottom-10 cursor-pointer px-3 py-1 text-sm text-white duration-300 hover:bg-gray-600 md:bottom-4"
             >
               skip animation?
             </button>

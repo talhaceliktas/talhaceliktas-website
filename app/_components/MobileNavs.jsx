@@ -128,7 +128,7 @@ const MobileNavs = ({ toggleMobileMenu, isMobileMenuOpen }) => {
           </div>
           <div ref={addToRefs}>
             <a
-              href="/TalhaCeliktasCV.pdf"
+              href="/TalhaÇeliktaşCV.pdf"
               download
               className="bg-primary-400 text-primary-700 hover:bg-primary-500 cursor-pointer rounded-xl px-3 py-2 text-lg"
             >

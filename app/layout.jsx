@@ -11,9 +11,36 @@ export const press_start_2p = Press_Start_2P({
 export const jetbrains_mono = JetBrains_Mono();
 
 export const metadata = {
-  title: "celiktas",
+  title: "Talha Celiktas – Portfolio",
   description:
-    "I'm Talha Celiktas, a full stack developer and UI/UX designer who turns ideas into reality. I specialize in building responsive, user-friendly web applications and exploring new technologies to create innovative solutions. From designing intuitive interfaces to optimizing backend performance, I enjoy every step of the development process.",
+    "Personal portfolio website of Talha Celiktas. Showcasing projects, skills, and technologies with a modern VS Code-inspired interface, 3D visuals, and smooth animations.",
+  keywords: [
+    "Talha Celiktas",
+    "Portfolio",
+    "Web Developer",
+    "Frontend Developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+    "Three.js",
+    "GSAP",
+  ],
+  authors: [{ name: "Talha Celiktas", url: "https://talhaceliktas" }],
+  creator: "Talha Celiktas",
+  metadataBase: new URL("https://talhaceliktas"),
+  openGraph: {
+    title: "Talha Celiktas – Portfolio",
+    description:
+      "Explore Talha Celiktas' portfolio – featuring interactive projects, 3D designs, and modern frontend technologies.",
+    url: "https://talhaceliktas",
+    siteName: "Talha Celiktas – Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  icons: {
+    icon: "/icon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {

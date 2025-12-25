@@ -4,7 +4,7 @@ import {
   pages as initialPages,
   introIsVisible as intialIntroVisibleState,
   IDEisFullScreen as initialIDEFullScreenState,
-} from "@/app/_utils/constants";
+} from "../_utils/constants";
 
 export const useStore = create((set) => ({
   openedPages: initialPages,

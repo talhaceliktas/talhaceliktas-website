@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useStore } from "../store/store";
 import { FaReact } from "react-icons/fa";
 import { MdReportGmailerrorred } from "react-icons/md";
-import { pages } from "@/app/_utils/constants";
+import { pages } from "../_utils/constants";
 
 const IDEPage = ({ page }) => {
   const path = usePathname();

@@ -1,4 +1,4 @@
-import { projects } from "@/app/portfolio/constants";
+import { projects } from "../portfolio/constants";
 import { FaExternalLinkAlt, FaGithub } from "react-icons/fa";
 
 const Projects = ({ projectRefs }) => {

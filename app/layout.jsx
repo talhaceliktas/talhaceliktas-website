@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Script from "next/script";
 import { Open_Sans, Press_Start_2P, JetBrains_Mono } from "next/font/google";
+import { Suspense } from "react";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -75,8 +76,10 @@ export default function RootLayout({ children }) {
       </head>
 
       <body className="antialiased">
-        <AnalyticsTracker />
-        <HomeLayout>{children}</HomeLayout>
+        <Suspense>
+          <AnalyticsTracker />
+          <HomeLayout>{children}</HomeLayout>
+        </Suspense>
       </body>
     </html>
   );

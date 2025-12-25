@@ -1,4 +1,4 @@
-import { certificates } from "@/app/portfolio/constants";
+import { certificates } from "../portfolio/constants";
 import { FaCertificate } from "react-icons/fa";
 
 const Certifications = ({ certRefs }) => {
